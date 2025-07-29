@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import force_text, python_2_unicode_compatible
-from django.utils.translation import override, ugettext_lazy as _, ugettext
+from django.utils.encoding import force_str
+from django.utils.translation import override, gettext_lazy as _, gettext
 
 from cms.models import CMSPlugin
 from cms.models.fields import PlaceholderField
@@ -29,7 +29,6 @@ from .utils import get_additional_styles, date_or_datetime
 STANDARD = 'standard'
 
 
-@python_2_unicode_compatible
 class Event(TranslatedAutoSlugifyMixin,
             TranslationHelperMixin,
             TranslatableModel):
@@ -229,7 +228,6 @@ class Event(TranslatedAutoSlugifyMixin,
             return reverse('{0}events_detail'.format(namespace), kwargs=kwargs)
 
 
-@python_2_unicode_compatible
 class EventCoordinator(models.Model):
 
     name = models.CharField(max_length=200, blank=True)
@@ -272,8 +270,8 @@ class EventCoordinator(models.Model):
 
 class Registration(models.Model):
     SALUTATIONS = Choices(
-        ('SALUTATION_FEMALE', 'mrs', ugettext('Ms.')),
-        ('SALUTATION_MALE', 'mr', ugettext('Mr.')),
+        ('SALUTATION_FEMALE', 'mrs', gettext('Ms.')),
+        ('SALUTATION_MALE', 'mr', gettext('Mr.')),
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -334,7 +332,6 @@ class BaseEventPlugin(CMSPlugin):
         abstract = True
 
 
-@python_2_unicode_compatible
 class EventListPlugin(BaseEventPlugin):
     STYLE_CHOICES = [
         (STANDARD, _('Standard')),
@@ -349,7 +346,7 @@ class EventListPlugin(BaseEventPlugin):
     events = SortedManyToManyField(Event, blank=True)
 
     def __str__(self):
-        return force_text(self.pk)
+        return force_str(self.pk)
 
     def copy_relations(self, oldinstance):
         super(EventListPlugin, self).copy_relations(oldinstance)
@@ -360,7 +357,6 @@ class EventListPlugin(BaseEventPlugin):
         self.events = Event.objects.filter(eventlistplugin__pk=oldinstance.pk)
 
 
-@python_2_unicode_compatible
 class UpcomingPluginItem(BaseEventPlugin):
     STYLE_CHOICES = [
         (STANDARD, _('Standard')),
@@ -399,12 +395,11 @@ class UpcomingPluginItem(BaseEventPlugin):
     )
 
     def __str__(self):
-        return force_text(
+        return force_str(
             self.PAST_EVENTS if self.past_events else self.FUTURE_EVENTS
         )
 
 
-@python_2_unicode_compatible
 class EventCalendarPlugin(BaseEventPlugin):
 
     cache_duration = models.PositiveSmallIntegerField(
@@ -416,4 +411,4 @@ class EventCalendarPlugin(BaseEventPlugin):
     )
 
     def __str__(self):
-        return force_text(self.pk)
+        return force_str(self.pk)

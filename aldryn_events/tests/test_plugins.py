@@ -7,7 +7,7 @@ from cms.models import Placeholder
 from cms.utils.i18n import force_language
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django.core.cache import cache
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 import mock
 from aldryn_events.models import Event, EventsConfig
@@ -551,8 +551,8 @@ class EventPluginsTestCase(TestPluginLanguageHelperMixin, EventBaseTestCase):
                 plugin_url = "{0}?plugin_pk={1}".format(
                     calendar_url(2014, 2, language, namespace), plugin.pk)
                 rendered[language] = {
-                    'p1': force_text(self.client.get(page_url).content),
-                    'p2': force_text(self.client.get(plugin_url).content),
+                    'p1': force_str(self.client.get(page_url).content),
+                    'p2': force_str(self.client.get(plugin_url).content),
                 }
 
         # expected html patterns
