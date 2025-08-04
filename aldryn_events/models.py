@@ -237,6 +237,7 @@ class EventCoordinator(models.Model):
         verbose_name=_('user'),
         null=True,
         blank=True,
+        on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -323,6 +324,7 @@ class BaseEventPlugin(CMSPlugin):
         CMSPlugin,
         related_name='%(app_label)s_%(class)s',
         parent_link=True,
+        on_delete=models.CASCADE,
     )
 
     def copy_relations(self, old_instance):
