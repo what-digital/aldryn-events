@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=200, blank=True)),
                 ('email', models.EmailField(max_length=80, blank=True)),
-                ('user', models.ForeignKey(null=True, blank=True, to=settings.AUTH_USER_MODEL, unique=True, verbose_name='user')),
+                ('user', models.ForeignKey(null=True, blank=True, to=settings.AUTH_USER_MODEL, unique=True, verbose_name='user', on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },
@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventListPlugin',
             fields=[
-                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
+                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin', on_delete=django.db.models.deletion.CASCADE)),
                 ('style', models.CharField(default='standard', max_length=50, verbose_name='Style', choices=[('standard', 'Standard')])),
                 ('events', sortedm2m.fields.SortedManyToManyField(help_text=None, to='aldryn_events.Event', null=True, blank=True)),
             ],
@@ -79,7 +79,7 @@ class Migration(migrations.Migration):
                 ('location_lat', models.FloatField(null=True, verbose_name='location latitude', blank=True)),
                 ('location_lng', models.FloatField(null=True, verbose_name='location longitude', blank=True)),
                 ('language_code', models.CharField(max_length=15, db_index=True)),
-                ('master', models.ForeignKey(related_name='translations', editable=False, to='aldryn_events.Event', null=True)),
+                ('master', models.ForeignKey(related_name='translations', editable=False, to='aldryn_events.Event', null=True, on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -105,7 +105,7 @@ class Migration(migrations.Migration):
                 ('mobile', models.CharField(default='', max_length=20, verbose_name='Mobile number', blank=True)),
                 ('email', models.EmailField(max_length=75, verbose_name='E-Mail')),
                 ('message', models.TextField(default='', verbose_name='Message', blank=True)),
-                ('event', models.ForeignKey(to='aldryn_events.Event')),
+                ('event', models.ForeignKey(to='aldryn_events.Event', on_delete=django.db.models.deletion.CASCADE)),
             ],
             options={
             },
@@ -114,7 +114,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UpcomingPluginItem',
             fields=[
-                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
+                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin', on_delete=django.db.models.deletion.CASCADE)),
                 ('past_events', models.BooleanField(default=False, verbose_name='selection', choices=[(False, 'future events'), (True, 'past events')])),
                 ('style', models.CharField(default='standard', max_length=50, verbose_name='Style', choices=[('standard', 'Standard')])),
                 ('latest_entries', models.PositiveSmallIntegerField(default=5, help_text='The number of latests events to be displayed.', verbose_name='latest entries')),
